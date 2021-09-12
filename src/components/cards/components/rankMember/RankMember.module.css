@@ -1,0 +1,13 @@
+.wrap {
+  margin-bottom: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+}
+.name {
+  margin-right: auto;
+  display: block;
+}
+
+.count {
+  color: #bbb;
+}
