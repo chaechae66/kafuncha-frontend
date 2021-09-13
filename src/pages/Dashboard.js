@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom'
-import ChattingRank from '../components/cards/chattingRank/ChattingRank'
 import styles from './Dashboard.module.css'
+import Header from '../components/layout/header/Header'
+import Side from '../components/layout/side/Side'
+import MainPanel from '../components/layout/mainPanel/MainPanel'
 
 export default function Dashboard() {
   return (
     <div className={styles.bg}>
-      <ChattingRank />
-      <Link to="/" className={styles.goToIntro}>
-        인트로 Go!!
-      </Link>
+      <Header />
+      <main className={styles.main}>
+        <Side />
+        <MainPanel />
+      </main>
     </div>
   )
 }

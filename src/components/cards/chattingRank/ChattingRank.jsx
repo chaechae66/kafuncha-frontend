@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 const ChattingRank = () => {
-  const [data] = useState(null)
+  const [data, setData] = useState(null)
 
   const fileName =
     '/c5111957-2d29-4914-9add-393206723900-1485868656441256377.csv'
@@ -12,7 +12,7 @@ const ChattingRank = () => {
     fetch(
       'https://programming.coffee/daily-champion-rank' +
         fileName +
-        '?rewindNumDays=8'
+        '?rewindNumDays=3'
     ) //
       .then(res => {
         if (res.ok) {
@@ -20,15 +20,13 @@ const ChattingRank = () => {
         }
       })
       .then(res => {
+        console.log('res', res)
         let dataAry = []
-        let copyRes = [...res]
+        let copyRes = res.slice()
         dataAry = copyRes.reduce((acc, data) => {
           if (acc.some(elem => elem.user === data.user)) {
-            console.log('data', data)
-            let copyData = { ...data }
             let findData = acc.find(elem => elem.user === data.user)
-            console.log('finddata', findData)
-            findData.messageCount += copyData.messageCount
+            findData.messageCount += data.messageCount
           } else {
             acc.push(data)
           }
@@ -41,8 +39,10 @@ const ChattingRank = () => {
           return b.messageCount - a.messageCount
         })
       )
-      .then(res => console.log('res', res))
-    // .then(res => setData(res))
+      .then(res => {
+        return [res[0], res[1], res[2]]
+      })
+      .then(res => setData(res))
   }, [])
 
   console.log('setdata', data)

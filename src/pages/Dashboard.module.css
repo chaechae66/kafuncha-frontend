@@ -4,10 +4,7 @@
   height: 100vh;
 }
 
-.goToIntro {
-  margin: 0 20rem;
-  background-color: #3771df;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
+.main {
+  display: flex;
+  min-height: 90vh;
 }
