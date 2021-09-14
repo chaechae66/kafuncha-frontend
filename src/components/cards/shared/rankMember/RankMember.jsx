@@ -1,8 +1,11 @@
 import React from 'react'
 import styles from './RankMember.module.css'
 
-const RankMember = ({ rank, name, messageCount }) => {
+const RankMember = ({ user, msgCountOrDate, percent, unit, index }) => {
+  const rank = index + 1
   const rankOpacity = 1 / rank
+  console.log('rank', rank)
+  console.log('opacity', rankOpacity)
   return (
     <div className={styles.wrap}>
       <strong
@@ -13,8 +16,12 @@ const RankMember = ({ rank, name, messageCount }) => {
         }}>
         {rank}위
       </strong>
-      <strong className={styles.name}>{name}</strong>
-      <span className={styles.count}>{messageCount}회</span>
+      <strong className={styles.name}>{user}</strong>
+      {!percent ? <></> : <div>{percent}</div>}
+      <span className={styles.count}>
+        {msgCountOrDate}
+        {unit}
+      </span>
     </div>
   )
 }
