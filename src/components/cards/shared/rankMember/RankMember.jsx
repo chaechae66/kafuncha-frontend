@@ -4,8 +4,6 @@ import styles from './RankMember.module.css'
 const RankMember = ({ user, msgCountOrDate, percent, unit, index }) => {
   const rank = index + 1
   const rankOpacity = 1 / rank
-  console.log('rank', rank)
-  console.log('opacity', rankOpacity)
   return (
     <div className={styles.wrap}>
       <strong

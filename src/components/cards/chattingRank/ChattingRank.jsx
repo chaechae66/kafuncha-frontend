@@ -7,15 +7,48 @@ import { v4 } from 'uuid'
 const ChattingRank = () => {
   const [data, setData] = useState(null)
   const [wholeData, setWholeData] = useState(null)
+  const [changeUrl, setChangeUrl] = useState({
+    champion: 0,
+    slice: 2,
+  })
+
+  console.log(changeUrl)
 
   const fileName =
     '/c5111957-2d29-4914-9add-393206723900-1485868656441256377.csv'
+
+  const handlePeriodData = value => {
+    switch (value) {
+      case 'daily':
+        setChangeUrl({
+          champion: 0,
+          slice: 2,
+        })
+        break
+      case 'weekly':
+        setChangeUrl({
+          champion: 3,
+          slice: 5,
+        })
+        break
+      case 'monthly':
+        setChangeUrl({
+          champion: 8,
+          slice: 10,
+        })
+        break
+
+      default:
+        throw Error(value + '는 없는 매게변수입니다!')
+    }
+  }
 
   useEffect(() => {
     fetch(
       'https://programming.coffee/daily-champion-rank' +
         fileName +
-        '?rewindNumDays=8'
+        '?rewindNumDays=' +
+        changeUrl.champion
     ) //
       .then(res => {
         if (res.ok) {
@@ -46,7 +79,7 @@ const ChattingRank = () => {
         return [res[0], res[1], res[2]]
       })
       .then(res => setData(res))
-  }, [])
+  }, [changeUrl])
 
   useEffect(() => {
     fetch('https://programming.coffee/daily-chat-count' + fileName)
@@ -55,19 +88,20 @@ const ChattingRank = () => {
           return res.json()
         }
       })
-      .then(res => res.slice(0, 10))
+      .then(res => res.slice(0, changeUrl.slice))
       .then(res => {
+        console.log(res)
         let totalCount = 0
         res.forEach(ele => {
           totalCount += ele.count
         })
         setWholeData(totalCount)
       })
-  }, [])
+  }, [changeUrl])
 
   return (
     <div className={styles.box}>
-      <CardHeader title="채팅랭킹" />
+      <CardHeader title="채팅랭킹" handlePeriodData={handlePeriodData} />
       <br />
       {!data || !wholeData ? (
         <h3>데이터가 없습니다.</h3>

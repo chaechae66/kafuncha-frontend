@@ -12,6 +12,32 @@ const MentionRank = () => {
   const fileName =
     '/c5111957-2d29-4914-9add-393206723900-1485868656441256377.csv'
 
+  const handlePeriodData = value => {
+    // switch (value) {
+    //   case 'daily':
+    //     setChangeUrl({
+    //       champion: 0,
+    //       slice: 2,
+    //     })
+    //     break
+    //   case 'weekly':
+    //     setChangeUrl({
+    //       champion: 3,
+    //       slice: 5,
+    //     })
+    //     break
+    //   case 'monthly':
+    //     setChangeUrl({
+    //       champion: 8,
+    //       slice: 10,
+    //     })
+    //     break
+    //   default:
+    //     throw Error(value + '는 없는 매게변수입니다!')
+    // }
+    console.log(value)
+  }
+
   useEffect(() => {
     fetch('https://programming.coffee/mention' + fileName) //
       .then(res => {
@@ -62,7 +88,7 @@ const MentionRank = () => {
   }, [])
   return (
     <div className={styles.box}>
-      <CardHeader title="맨션 랭킹" />
+      <CardHeader title="맨션 랭킹" handlePeriodData={handlePeriodData} />
       <br />
       {!data || !wholeData ? (
         <h3>데이터가 없습니다.</h3>

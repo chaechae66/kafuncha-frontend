@@ -2,8 +2,6 @@ import React from 'react'
 import styles from './RowGraph.module.css'
 
 const RowGraph = ({ user, msgCount, wholeData }) => {
-  console.log('user', user)
-  console.log('msgCount', msgCount)
   const percent = (msgCount / wholeData) * 100
   // const onActive = e => {
   //   e.preventDefault()
