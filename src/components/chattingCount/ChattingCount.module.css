@@ -1,0 +1,8 @@
+.box{
+  color:#fff;
+}
+
+.countBox{
+  display: flex;
+  justify-content: space-between;
+}
