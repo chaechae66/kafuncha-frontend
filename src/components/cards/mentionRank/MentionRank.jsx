@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import styles from '../chattingRank/ChattingRank.module.css'
 import CardHeader from '../shared/cardHeader/CardHeader'
 import RankMember from '../shared/rankMember/RankMember'
 import RowGraph from '../shared/rowGraph/RowGraph'
-import styles from './ChattingRank.module.css'
 import { v4 } from 'uuid'
-const ChattingRank = () => {
+
+const MentionRank = () => {
   const [data, setData] = useState(null)
   const [wholeData, setWholeData] = useState(null)
 
@@ -12,24 +13,21 @@ const ChattingRank = () => {
     '/c5111957-2d29-4914-9add-393206723900-1485868656441256377.csv'
 
   useEffect(() => {
-    fetch(
-      'https://programming.coffee/daily-champion-rank' +
-        fileName +
-        '?rewindNumDays=8'
-    ) //
+    fetch('https://programming.coffee/mention' + fileName) //
       .then(res => {
         if (res.ok) {
           return res.json()
         }
       })
+      .then(res => res.splice(0, 41))
       .then(res => {
-        console.log('res', res)
+        console.log('mention', res)
         let dataAry = []
         let copyRes = res.slice()
         dataAry = copyRes.reduce((acc, data) => {
           if (acc.some(elem => elem.user === data.user)) {
             let findData = acc.find(elem => elem.user === data.user)
-            findData.messageCount += data.messageCount
+            findData.mentionCount += data.mentionCount
           } else {
             acc.push(data)
           }
@@ -39,7 +37,7 @@ const ChattingRank = () => {
       })
       .then(res =>
         res.sort((a, b) => {
-          return b.messageCount - a.messageCount
+          return b.mentionCount - a.mentionCount
         })
       )
       .then(res => {
@@ -49,25 +47,22 @@ const ChattingRank = () => {
   }, [])
 
   useEffect(() => {
-    fetch('https://programming.coffee/daily-chat-count' + fileName)
+    fetch('https://programming.coffee/mention' + fileName) //
       .then(res => {
         if (res.ok) {
           return res.json()
         }
       })
-      .then(res => res.slice(0, 10))
+      .then(res => res.splice(0, 41))
       .then(res => {
         let totalCount = 0
-        res.forEach(ele => {
-          totalCount += ele.count
-        })
+        res.map(elem => (totalCount += elem.mentionCount))
         setWholeData(totalCount)
       })
   }, [])
-
   return (
     <div className={styles.box}>
-      <CardHeader title="채팅랭킹" />
+      <CardHeader title="맨션 랭킹" />
       <br />
       {!data || !wholeData ? (
         <h3>데이터가 없습니다.</h3>
@@ -76,7 +71,7 @@ const ChattingRank = () => {
           <RowGraph
             key={v4()}
             user={elem.user}
-            msgCount={elem.messageCount}
+            msgCount={elem.mentionCount}
             wholeData={wholeData}
           />
         ))
@@ -90,7 +85,7 @@ const ChattingRank = () => {
             key={v4()}
             index={index}
             user={elem.user}
-            msgCountOrDate={elem.messageCount}
+            msgCountOrDate={elem.mentionCount}
             percent={null}
             unit="회"
           />
@@ -100,4 +95,4 @@ const ChattingRank = () => {
   )
 }
 
-export default ChattingRank
+export default MentionRank
