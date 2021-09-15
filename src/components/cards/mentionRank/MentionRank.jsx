@@ -118,6 +118,7 @@ const MentionRank = () => {
             msgCountOrDate={elem.mentionCount}
             percent={null}
             unit="회"
+            prune={false}
           />
         ))
       )}

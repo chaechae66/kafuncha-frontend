@@ -11,8 +11,7 @@ const ChattingRank = () => {
     champion: 0,
     slice: 2,
   })
-
-  console.log(changeUrl)
+  const [loading, setLoading] = useState(false)
 
   const fileName =
     '/c5111957-2d29-4914-9add-393206723900-1485868656441256377.csv'
@@ -44,6 +43,7 @@ const ChattingRank = () => {
   }
 
   useEffect(() => {
+    setLoading(true)
     fetch(
       'https://programming.coffee/daily-champion-rank' +
         fileName +
@@ -78,10 +78,14 @@ const ChattingRank = () => {
       .then(res => {
         return [res[0], res[1], res[2]]
       })
-      .then(res => setData(res))
+      .then((res) => {
+        setData(res)
+        setLoading(false)
+      })
   }, [changeUrl])
 
   useEffect(() => {
+    setLoading(true)
     fetch('https://programming.coffee/daily-chat-count' + fileName)
       .then(res => {
         if (res.ok) {
@@ -96,6 +100,7 @@ const ChattingRank = () => {
           totalCount += ele.count
         })
         setWholeData(totalCount)
+        setLoading(false)
       })
   }, [changeUrl])
 
@@ -107,32 +112,41 @@ const ChattingRank = () => {
         prune={false}
       />
       <br />
-      {!data || !wholeData ? (
-        <h3>데이터가 없습니다.</h3>
-      ) : (
-        data.map(elem => (
-          <RowGraph
-            key={v4()}
-            user={elem.user}
-            msgCount={elem.messageCount}
-            wholeData={wholeData}
-          />
-        ))
+      {!loading ? (
+        !data || !wholeData ? (
+          <h3>데이터가 없습니다.</h3>
+        ) : (
+          data.map(elem => (
+            <RowGraph
+              key={v4()}
+              user={elem.user}
+              msgCount={elem.messageCount}
+              wholeData={wholeData}
+            />
+          ))
+        )
+      ):(
+        <h3>로딩 중입니다.</h3>
       )}
       <br />
-      {!data || !wholeData ? (
+      {!loading ? (
+        !data || !wholeData ? (
+          <></>
+        ) : (
+          data.map((elem, index) => (
+            <RankMember
+              key={v4()}
+              index={index}
+              user={elem.user}
+              msgCountOrDate={elem.messageCount}
+              percent={null}
+              unit="회"
+              prune={false}
+            />
+          ))
+        )
+      ):(
         <></>
-      ) : (
-        data.map((elem, index) => (
-          <RankMember
-            key={v4()}
-            index={index}
-            user={elem.user}
-            msgCountOrDate={elem.messageCount}
-            percent={null}
-            unit="회"
-          />
-        ))
       )}
     </div>
   )
