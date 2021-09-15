@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from '../chattingRank/ChattingRank.module.css'
 import CardHeader from '../shared/cardHeader/CardHeader'
 import RankMember from '../shared/rankMember/RankMember'
+import { v4 } from 'uuid'
 
 const PruneRank = () => {
   const fileName =
@@ -62,7 +63,7 @@ const PruneRank = () => {
           <h3>데이터가 없습니다.</h3>
         ) : (
           data.map((elem, index) => (
-            <>
+            <div key={v4()}>
               <RankMember
               user={elem?.user}
               percent={null}
@@ -72,7 +73,7 @@ const PruneRank = () => {
               prune={true}
             />
             <div style={{marginBottom:'0.75rem'}}></div>
-            </>
+            </div>
           ))
         )
       ):(
