@@ -101,7 +101,11 @@ const ChattingRank = () => {
 
   return (
     <div className={styles.box}>
-      <CardHeader title="채팅랭킹" handlePeriodData={handlePeriodData} />
+      <CardHeader
+        title="채팅랭킹"
+        handlePeriodData={handlePeriodData}
+        prune={false}
+      />
       <br />
       {!data || !wholeData ? (
         <h3>데이터가 없습니다.</h3>
